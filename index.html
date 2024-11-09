@@ -1,4 +1,4 @@
-<Funds Transfer>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -38,7 +38,7 @@
             border-radius: 4px;
             font-size: 16px;
         }
-        button, .retry-button {
+        button {
             width: 100%;
             padding: 10px;
             background-color: #4CAF50;
@@ -49,12 +49,8 @@
             cursor: pointer;
             margin-top: 10px;
         }
-        button:hover, .retry-button:hover {
+        button:hover {
             background-color: #45a049;
-        }
-        .retry-button {
-            display: none; /* Initially hidden */
-            text-decoration: none;
         }
     </style>
 </head>
@@ -69,9 +65,9 @@
         <button onclick="validateOTP()">Validate OTP</button>
     </div>
 
-    <!-- Fund Transfer Approval Message -->
-    <div id="transferApprovalMessage">
-        <h2>Transfer Approved</h2>
+    <!-- Transfer Approval Message -->
+    <div id="transferApprovalMessage" style="display: none;">
+        <h2>Fund Transfer Approved</h2>
         <p>Your fund transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong> has been approved to the card ending in <strong>48911</strong>.</p>
         <p>Please await your next OTP for the card ending with <strong>48903</strong>.</p>
     </div>
@@ -79,16 +75,9 @@
 
 <script>
     function validateOTP() {
-        // Simulate OTP expiration - here it just shows expired message immediately
+        // Simulate OTP validation and show the transfer approval message
         document.getElementById("otpForm").style.display = "none";
-        document.getElementById("otpExpiredMessage").style.display = "block";
-    }
-
-    function requestNewOTP() {
-        // Reset the form to request a new OTP
-        document.getElementById("otpInput").value = "";
-        document.getElementById("otpForm").style.display = "block";
-        document.getElementById("otpExpiredMessage").style.display = "none";
+        document.getElementById("transferApprovalMessage").style.display = "block";
     }
 </script>
 
